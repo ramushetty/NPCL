@@ -1,0 +1,24 @@
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: beige;
+}
+
+.form {
+    background-color: white;
+    padding: 20px;
+}
+
+
+
+.form input {
+    width: 100%;
+    padding: 5px;
+}
+
+.form label {
+    display: block;
+    margin-bottom: 5px;
+}
