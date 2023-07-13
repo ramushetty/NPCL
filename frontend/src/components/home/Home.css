@@ -1,0 +1,7 @@
+.home-button {
+    background-color: blue;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+}

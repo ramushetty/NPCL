@@ -18,7 +18,7 @@ const tableQueries = [
         user_id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
         username VARCHAR(50) NOT NULL,
         password VARCHAR(50) NOT NULL,
-        email VARCHAR(50) NOT NULL,
+        email VARCHAR(50) UNIQUE NOT NULL,
         data_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
         e_rupee DECIMAL(10,2) DEFAULT 0.00 NOT NULL
     );

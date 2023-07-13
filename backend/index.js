@@ -1,13 +1,46 @@
 const express = require("express")
 const cors = require('cors');
+const sessions = require('express-session')
+const sessionMiddleware = require('./middleware/sessionMiddleware');
 const { createTables } = require("./CreateTable");
+const config = require('./config/config')
 
 const { pool } = require('./database');
 
+
+// routers
+const {userRouter} = require('./controller/user/auth')
+
+
 const app = express()
-app.use(cors());
+app.use(cors({
+    origin: "http://localhost:3000",
+    methods: ["POST","DELETE","PUT","GET","OPTIONS","HEAD"],
+    credentials:true,
+}));
 
 app.use(express.json()) // Middleware
+app.use(sessionMiddleware)
+// app.use(sessions({
+//     secret: config.secret,
+//     resave: false,
+//     name: 'sid',
+//     saveUninitialized: true,
+//     cookie: { 
+//         secure: false,
+//         httpOnly: true,
+//         maxAge: 36000000,
+//         sameSite:"lax",
+//         path:"/api"
+        
+//     }})); // Middleware for sessions
+
+
+app.use('/api',userRouter);
+
+
+
+
 
 app.get('/api/data', (req,res)=>{
     const data = {
@@ -18,27 +51,9 @@ app.get('/api/data', (req,res)=>{
 });
 
 
-// user registration 
-app.post("/api/users", (req,res) => {
-    console.log(req.body)
-    const {name,email,password} = req.body;
 
-    const insertQuery =   `
-        INSERT INTO users (username,password,email) 
-        VALUES ($1,$2,$3);
-    `;
-    const values = [name,password,email];
 
-    pool.query(insertQuery,values)
-        .then (() =>{
-            res.sendStatus(201).json({message: 'user created successfully!'});
-        })
-        .catch((err) => {
-            console.error('Error creating user',err);
-            res.sendStatus(500).json({message: 'Error creating user'});
-        });
 
-});
 
 async function startServer() {
     try {
